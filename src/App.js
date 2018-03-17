@@ -136,7 +136,11 @@ class App extends Component {
                 <Playlist playlist={playlist}/>
                 // переберает массив и возвращает плейлист(4 знаение);
             )}
-        </div> : <button onClick={() => window.location = 'http://localhost:8888/login' } className='btn-signin'>Sign in with Spotify </button>
+        </div> : <button onClick={() => {
+          window.location = window.location.href.includes('localhost') 
+            ? 'http://localhost:8888/login' 
+            : 'https://dev-tips-backend.herokuapp.com/login'} 
+        } className='btn-signin'>Sign in with Spotify </button>
         }
       </div>
     );
