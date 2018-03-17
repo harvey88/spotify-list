@@ -33,3 +33,11 @@ h1{
   font-size: 54px;
   color: #fff;
 }
+.btn-signin{
+  margin-top: 40px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 4px solid #555555;
+  color: #555555;
+  background: #fff;
+}
