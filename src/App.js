@@ -65,7 +65,7 @@ class Playlist extends Component {
       let playlist = this.props.playlist
     return (
       <div style={{...defaultStyle,display:'inline-block', width: '25%'}}>
-        <img src={playlist.imageUrl}/>
+        <img src={playlist.imageUrl} style={{ width: '90%', marginTop: '10px'}} />
         <h3>{playlist.name}</h3>
         <ul>
           {playlist.songs.map(song =>
@@ -88,6 +88,8 @@ class App extends Component {
   componentDidMount(){
     let parsed = queryString.parse(window.location.search);
     let accessToken = parsed.access_token;
+    if (!accessToken)
+      return;
 
     fetch('https://api.spotify.com/v1/me', {
       headers: { 'Authorization': 'Bearer ' + accessToken }
@@ -115,7 +117,7 @@ class App extends Component {
   render() {
     let playlistToRender = 
       this.state.user && 
-      this.state.playlist 
+      this.state.playlists
         ? this.state.playlists.filter(playlist => 
           playlist.name.toLowerCase().includes(
           this.state.filterString.toLowerCase())) 
