@@ -131,7 +131,7 @@ class App extends Component {
         })
         .then(playlists => this.setState({
             playlists: playlists.map(item => {
-              console.log(item.trackDatas);
+              console.log(item);
               return {
                 name: item.name,
                 imageUrl: item.images[0].url, 
@@ -144,10 +144,14 @@ class App extends Component {
     let playlistToRender = 
       this.state.user && 
       this.state.playlists
-        ? this.state.playlists.filter(playlist => 
-          playlist.name.toLowerCase().includes(
-          this.state.filterString.toLowerCase())) 
-        : [] 
+        ? this.state.playlists.filter(playlist => {
+          let matchesPlaylist = playlist.name.toLowerCase().includes(
+            this.state.filterString.toLowerCase()) 
+          let matchesSong = playlist.songs.find(song => song.name.toLowerCase()
+            .includes(this.state.filterString.toLowerCase()
+          ))
+          return matchesPlaylist || matchesSong
+        }) : [] 
     return (
       <div className="App">
         {this.state.user ? 
