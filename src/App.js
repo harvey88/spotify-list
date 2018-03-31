@@ -1,31 +1,29 @@
 import React, { Component } from 'react';
+import reset from 'reset-css';
 import './App.css';
 import queryString from 'query-string'
 
 let defaultTextColor = '#fff';
 let defaultStyle ={
-  color : defaultTextColor
+  color : defaultTextColor,
+  'font-family': 'Papyrus'
 };
-// let fakeServerData = {
-//   user:{
-//     name: 'Elijah',
-//     playlists: [
-//       {
-//         name: 'My favorites playlist',
-//         songs: [
-//           {name: 'whatever it takes', duraction: 1488},
-//           {name: 'Demons', duraction: 1488},
-//           {name: 'Monster', duraction: 1488}
-//         ]
-//       }
-//     ]
-//   }
-// };
+let counterStyle = {...defaultStyle, 
+  width:'40%', 
+  display:'inline-block',
+  margin: '20px 0',
+  fontSize: '16px'
+}
+
+function isEven (number){
+   return number % 2
+}
 
 class PlaylistCounter extends Component {
   render() {
+    let playlistCounterStyle = counterStyle
     return (
-      <div style={{...defaultStyle, width:'40%', display:'inline-block'}}>
+      <div style={playlistCounterStyle}>
         <h2>{this.props.playlists.length} playlists</h2>
       </div>
     );
@@ -40,9 +38,14 @@ class HoursCounter extends Component {
     let totalDuraction = allSongs.reduce((sum, eachSongs) => {
       return sum + eachSongs.duraction
     } , 0)
+    let totalDuractionHours = Math.round(totalDuraction/60) 
+    let isTooLow = totalDuractionHours < 10
+    let hoursCounterStyle = {...counterStyle,
+      color : isTooLow ? 'red' : 'white'
+    }
     return (
-      <div style={{...defaultStyle, width:'40%', display:'inline-block'}}>
-        <h2>{Math.round(totalDuraction/60)} hours</h2>
+      <div style={hoursCounterStyle}>
+        <h2>{totalDuractionHours} hours</h2>
       </div>
     );
   }
@@ -64,7 +67,13 @@ class Playlist extends Component {
   render(){
       let playlist = this.props.playlist
     return (
-      <div style={{...defaultStyle,display:'inline-block', width: '25%'}}>
+      <div style={{...defaultStyle,
+      display:'inline-block', 
+      width: '25%',
+      'background-color': isEven(this.props.index)
+        ? '#C0C0C0'
+        : '#808080'
+      }}>
         <img src={playlist.imageUrl} style={{ width: '90%', marginTop: '10px'}} />
         <h3>{playlist.name}</h3>
         <ul>
@@ -162,8 +171,8 @@ class App extends Component {
             <PlaylistCounter playlists={playlistToRender}/>
             <HoursCounter playlists={playlistToRender}/>
             <Filter onTextChange={text => this.setState({filterString: text})}/>
-            {playlistToRender.map(playlist =>
-                <Playlist playlist={playlist}/>
+            {playlistToRender.map((playlist, i) =>
+                <Playlist playlist={playlist} index={i}/>
                 // переберает массив и возвращает плейлист(4 знаение);
             )}
         </div> : <button onClick={() => {
